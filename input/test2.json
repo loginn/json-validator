@@ -10,7 +10,8 @@
                     "Los Angeles Kings",
                     "Golden State Warriros",
                     "Huston Rocket",
-                    "\u1F23"
+                    "\u1F23",
+                    10e2
                 ],
                 "answer": "Huston Rocket"
             }

@@ -73,13 +73,7 @@ impl Lexer {
         }
     }
 
-    fn number(&mut self) {
-        let mut result = String::new();
-        if self.current_char.unwrap() == '-' {
-            result.push('-');
-            self.advance();
-        }
-
+    fn loop_digits(&mut self, result: &mut String) {
         while let Some(c) = self.current_char {
             if c.is_digit(10) || c == '.' {
                 result.push(c);
@@ -88,13 +82,45 @@ impl Lexer {
                 break
             }
         }
+    }
+
+    fn number(&mut self) {
+        let mut result = String::new();
+
+        //minus
+        if self.current_char.unwrap() == '-' {
+            result.push('-');
+            self.advance();
+        }
+
+        //digits
+        self.loop_digits(&mut result);
+        //exponents
+        match self.current_char {
+            Some(c) if c == 'e' || c == 'E' => {
+                self.advance();
+                match self.current_char {
+                    None => {panic!()}
+                    Some(c) if c == '+' || c == '-' => {
+                        self.advance();
+                    }
+                    Some(c) if c.is_digit(10) => {
+                        self.loop_digits(&mut result)
+                    }
+                    Some(_) => panic!()
+                }
+            }
+            Some(_) => {}
+            None => {panic!()}
+        }
+
         if result.contains('.') {
-            match result.parse::<f32>() {
+            match result.parse::<f64>() {
                 Ok(_) => return,
                 Err(e) => panic!("{}", e)
             }
         } else {
-            match result.parse::<i32>() {
+            match result.parse::<i64>() {
                 Ok(_) => return,
                 Err(e) => panic!("{}", e)
             }
