@@ -78,12 +78,13 @@ impl Parser {
 }
 
 
-fn load_input() -> String {
-    fs::read_to_string("./input/test2.json").unwrap()
+fn load_input(path: &str) -> String {
+    fs::read_to_string(path).unwrap()
 }
 
 fn main() {
-    let input = load_input();
+    let path = std::env::args().nth(1).expect("No path given");
+    let input = load_input(&path);
     let lexer = Lexer::new(&input);
     let mut parser = Parser::new(lexer);
     parser.parse();
