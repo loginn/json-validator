@@ -80,14 +80,14 @@ impl Lexer {
         }
     }
 
-    fn loop_digits(&mut self, result: &mut String) {
-        let mut has_point = false;
+    // A function to loop over digits
+    fn loop_digits(&mut self, exponent: bool) {
+        let mut invalid_point = exponent;
         while let Some(c) = self.current_char {
-            if c == '.' && has_point == true {
-                panic!("Double point in number")
-            } else if c == '.' && has_point == false {
-                has_point = true;
-                result.push(c);
+            if c == '.' && invalid_point {
+                panic!("Unexpected floating point in number")
+            } else if c == '.' && !invalid_point {
+                invalid_point = true;
                 self.advance();
             } else if c.is_digit(10)  {
                 result.push(c);
