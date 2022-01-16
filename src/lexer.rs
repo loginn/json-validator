@@ -56,7 +56,10 @@ impl Lexer {
 
         lexer.current_char = input.chars().nth(lexer.pos);
 
-        lexer.whitespace = set!['\u{0020}', '\u{000A}', '\u{000D}', '\u{0009}'];
+        // Hashsets for specific values in strings
+        // Hashset for whitespace
+        lexer.whitespace = set![' ', '\n', '\r', '\t'];
+        // Hashset for escapable characters
         lexer.esc = set!['"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u'];
         lexer.unsafe_code_point = set!['"', '\\'];
 
@@ -68,8 +71,8 @@ impl Lexer {
     }
 
     fn skip_whitespace(&mut self) {
-        while let Some(ch) = self.input.chars().nth(self.pos) {
-            if ch.is_whitespace() {
+        while let Some(c) = self.input.chars().nth(self.pos) {
+            if self.whitespace.contains(&c) {
                 self.advance()
             } else {
                 break
