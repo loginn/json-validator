@@ -1,5 +1,15 @@
 {
-    "fruit": "Apple",
-    "size": "Large",
-    "color": "Red"
+  "test_arr":
+  [1, "str", {"inner": "value"}, ["a", "\uABCD"]],
+  "test_str": "str",
+  "test_nbr_1": 1.0,
+  "test_nbr_2": 1,
+  "test_nbr_3": 1e1,
+  "test_nbr_4": 1e-1213,
+  "test_nbr_5": -1e-1213,
+  "test_nbr_6": -1.0,
+  "test_nbr_7": -1,
+  "test_true": true,
+  "test_false": false,
+  "test_null": null
 }

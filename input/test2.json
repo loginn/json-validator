@@ -11,5 +11,7 @@
   "test_nbr_7": -1,
   "test_true": true,
   "test_false": false,
-  "test_null": null
+  "test_null": null,
+  "test_empty_arr": [],
+  "test_empty_obj": {}
 }
