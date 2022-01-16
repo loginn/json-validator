@@ -101,28 +101,43 @@ impl Validator {
                 break;
             }
         }
+
+        // Consume the closing bracket
         self.eat(TokenType::CLBR)
     }
 
+    // The main function of validator
     fn validate(&mut self) {
+        // If the json object starts with a '[' validate it as an array
         if self.current_token.ttype == TokenType::OPSQ {
             self.array();
+        // If the json object starts with a '{' validate it as an object
         } else if self.current_token.ttype == TokenType::OPBR {
             self.object()
         }
     }
 }
 
-
+// A function to load a file into a String
 fn load_input(path: &str) -> String {
     fs::read_to_string(path).unwrap()
 }
 
 fn main() {
+    // Parse the first argument
+    // Crash if it doesnt exist
     let path = std::env::args().nth(1).expect("No path given");
+
+    // Load the file
     let input = load_input(&path);
+
+    // Create a lexer
     let lexer = Lexer::new(&input);
+
+    // Create a validator
     let mut validator = Validator::new(lexer);
+
+    // Validate the file
     validator.validate();
     println!("Input json is valid")
 }
