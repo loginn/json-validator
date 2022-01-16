@@ -47,6 +47,14 @@ impl Parser {
         while self.current_token.ttype != TokenType::CLSQ {
             self.eat(TokenType::COMMA);
             self.value();
+
+            // If there is another value, the current token should be a comma
+            // Consume it and keep going, otherwise break
+            if self.current_token.ttype == TokenType::COMMA {
+                self.eat(TokenType::COMMA);
+            } else {
+                break;
+            }
         }
         self.eat(TokenType::CLSQ);
     }
@@ -64,6 +72,14 @@ impl Parser {
         while self.current_token.ttype != TokenType::CLBR {
             self.eat(TokenType::COMMA);
             self.pair();
+
+            // If there is another key value pair, the current token should be a comma
+            // Consume it and keep going, otherwise break
+            if self.current_token.ttype == TokenType::COMMA {
+                self.eat(TokenType::COMMA);
+            } else {
+                break;
+            }
         }
         self.eat(TokenType::CLBR)
     }
