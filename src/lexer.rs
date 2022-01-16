@@ -120,23 +120,10 @@ impl Lexer {
                         }
                         self.loop_digits(&mut result)
                     }
-                    Some(_) => panic!()
                 }
             }
             Some(_) => {}
             None => {panic!()}
-        }
-
-        if result.contains('.') {
-            match result.parse::<f64>() {
-                Ok(_) => return,
-                Err(e) => panic!("{}", e)
-            }
-        } else {
-            match result.parse::<i64>() {
-                Ok(_) => return,
-                Err(e) => panic!("{}", e)
-            }
         }
     }
 
@@ -254,6 +241,8 @@ impl Lexer {
             } else if c == ',' {
                 self.advance();
                 return Token { ttype: TokenType::COMMA }
+            } else {
+                panic!("Invalid character {:?} at position {}", self.current_char, self.pos)
             }
         }
         return Token {
