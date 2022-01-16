@@ -127,7 +127,7 @@ fn main() {
     // Parse the first argument
     // Crash if it doesnt exist
     let path = std::env::args().nth(1).expect("No path given");
-
+    println!("{}", path);
     // Load the file
     let input = load_input(&path);
 
