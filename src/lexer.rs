@@ -78,8 +78,15 @@ impl Lexer {
     }
 
     fn loop_digits(&mut self, result: &mut String) {
+        let mut has_point = false;
         while let Some(c) = self.current_char {
-            if c.is_digit(10) || c == '.' {
+            if c == '.' && has_point == true {
+                panic!("Double point in number")
+            } else if c == '.' && has_point == false {
+                has_point = true;
+                result.push(c);
+                self.advance();
+            } else if c.is_digit(10)  {
                 result.push(c);
                 self.advance();
             } else {
@@ -102,13 +109,15 @@ impl Lexer {
         //exponents
         match self.current_char {
             Some(c) if c == 'e' || c == 'E' => {
+                result.push(c);
                 self.advance();
                 match self.current_char {
                     None => {panic!()}
-                    Some(c) if c == '+' || c == '-' => {
-                        self.advance();
-                    }
-                    Some(c) if c.is_digit(10) => {
+                    Some(c) => {
+                        if c == '+' || c == '-' {
+                            result.push(c);
+                            self.advance();
+                        }
                         self.loop_digits(&mut result)
                     }
                     Some(_) => panic!()
