@@ -217,6 +217,7 @@ impl Lexer {
     }
 
     // get the next token based on the current character
+    // If no character is found, we reached the end of the input
     pub fn get_next_token(&mut self) -> Token {
         while let Some(c) = self.current_char {
             if self.whitespace.contains(&c) {
