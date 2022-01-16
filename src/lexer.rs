@@ -90,7 +90,6 @@ impl Lexer {
                 invalid_point = true;
                 self.advance();
             } else if c.is_digit(10)  {
-                result.push(c);
                 self.advance();
             } else {
                 break
@@ -99,29 +98,24 @@ impl Lexer {
     }
 
     fn number(&mut self) {
-        let mut result = String::new();
-
         //minus
         if self.current_char.unwrap() == '-' {
-            result.push('-');
             self.advance();
         }
 
         //digits
-        self.loop_digits(&mut result);
+        self.loop_digits(false);
         //exponents
         match self.current_char {
             Some(c) if c == 'e' || c == 'E' => {
-                result.push(c);
                 self.advance();
                 match self.current_char {
                     None => {panic!()}
                     Some(c) => {
                         if c == '+' || c == '-' {
-                            result.push(c);
                             self.advance();
                         }
-                        self.loop_digits(&mut result)
+                        self.loop_digits(true);
                     }
                 }
             }
