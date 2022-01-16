@@ -3,16 +3,18 @@ mod lexer;
 use std::fs;
 use crate::lexer::{Lexer, Token, TokenType};
 
-
-struct Parser {
+// Define the Validator struct
+struct Validator {
     lexer: Lexer,
     current_token: lexer::Token
 }
 
-impl Parser {
+// Impl block = Namespace tied to the Validator struct
+impl Validator {
 
-    fn new(lexer: Lexer) -> Parser {
-        let mut p = Parser {
+    // Build a new parser
+    fn new(lexer: Lexer) -> Validator {
+        let mut p = Validator {
             lexer,
             current_token: Token { ttype: TokenType::NONE }
         };
@@ -84,7 +86,7 @@ impl Parser {
         self.eat(TokenType::CLBR)
     }
 
-    fn parse(&mut self) {
+    fn validate(&mut self) {
         if self.current_token.ttype == TokenType::OPSQ {
             self.array();
         } else if self.current_token.ttype == TokenType::OPBR {
@@ -102,7 +104,7 @@ fn main() {
     let path = std::env::args().nth(1).expect("No path given");
     let input = load_input(&path);
     let lexer = Lexer::new(&input);
-    let mut parser = Parser::new(lexer);
-    parser.parse();
+    let mut validator = Validator::new(lexer);
+    validator.validate();
     println!("Input json is valid")
 }
