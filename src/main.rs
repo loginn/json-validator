@@ -24,7 +24,7 @@ impl Parser {
         if self.current_token.ttype == lookahead {
             self.current_token = self.lexer.get_next_token();
         } else {
-            panic!("Unexpected Token");
+            panic!("Unexpected token at position {}", self.lexer.pos());
         }
     }
 

@@ -63,6 +63,10 @@ impl Lexer {
         return lexer
     }
 
+    pub fn pos(&self) -> usize {
+        return self.pos
+    }
+
     fn skip_whitespace(&mut self) {
         while let Some(ch) = self.input.chars().nth(self.pos) {
             if ch.is_whitespace() {
