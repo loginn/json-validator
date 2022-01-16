@@ -1,6 +1,9 @@
 mod lexer;
 
+// Imports
+// Importing the filesystem from standard
 use std::fs;
+// Importing locally from lexer.rs
 use crate::lexer::{Lexer, Token, TokenType};
 
 // Define the Validator struct
@@ -18,10 +21,13 @@ impl Validator {
             lexer,
             current_token: Token { ttype: TokenType::NONE }
         };
+        // Get the first token from our lexer
         p.current_token = p.lexer.get_next_token();
         return p
     }
 
+    // If the current token matches the expected type,
+    // consume it and get the next token from the lexer
     fn eat(&mut self, lookahead: TokenType) {
         if self.current_token.ttype == lookahead {
             self.current_token = self.lexer.get_next_token();
@@ -30,6 +36,10 @@ impl Validator {
         }
     }
 
+    // Value function consumes the possible values for JSON, based on the current token
+    // Value is anything that can be found in a json pair (i.e. {"key": value})
+    // or as the member of an array (i.e. [value, value, ...])
+    // Possible values are : string, number, object, array, true, false, null
     fn value(&mut self) {
         match self.current_token.ttype {
             TokenType::OPBR => { self.object() },
@@ -43,11 +53,13 @@ impl Validator {
         }
     }
 
+    // A function used to consume an array in a json file (i.e. [value, value])
     fn array(&mut self) {
+        // Consume the opening square bracket
         self.eat(TokenType::OPSQ);
-        self.value();
+
+        // Consume values as long as they exist
         while self.current_token.ttype != TokenType::CLSQ {
-            self.eat(TokenType::COMMA);
             self.value();
 
             // If there is another value, the current token should be a comma
@@ -58,21 +70,27 @@ impl Validator {
                 break;
             }
         }
+        // Consume the final square bracket of the array
         self.eat(TokenType::CLSQ);
     }
 
+    // A function used to consume a pair in a json file (i.e. "key": value)
     fn pair(&mut self) {
+        // Consume the key
         self.eat(TokenType::STRING);
+        // Consume the colon
         self.eat(TokenType::COLON);
+        // Consume the value
         self.value();
     }
 
+    // A function used to consume an array in a json file (i.e. {"key1": value1, "key2": value2, ...})
     fn object(&mut self) {
+        // Consume the opening bracket
         self.eat(TokenType::OPBR);
-        self.pair();
 
+        // Consume the key value pairs
         while self.current_token.ttype != TokenType::CLBR {
-            self.eat(TokenType::COMMA);
             self.pair();
 
             // If there is another key value pair, the current token should be a comma
