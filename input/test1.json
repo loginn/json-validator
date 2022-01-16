@@ -6,7 +6,7 @@
   "test_nbr_2": 1,
   "test_nbr_3": 1e1,
   "test_nbr_4": 1e-1213,
-  "test_nbr_5": -1e-1213,
+  "test_nbr_5": -1e-121.3,
   "test_nbr_6": -1.0,
   "test_nbr_7": -1,
   "test_true": true,

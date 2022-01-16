@@ -162,14 +162,18 @@ impl Lexer {
                 match self.peek() {
                     None => panic!("Invalid end of string at pos {}", self.pos),
                     Some(p) => {
-                        if !self.esc.contains(&p) {
-                            panic!("Invalid escaped character : {} at pos {}", p, self.pos)
-                        } else if p == 'u' {
+                        if p == 'u' {
                             // if the next char is unicode advance twice to skip the '\' and 'u'
                             self.advance();
                             self.advance();
                             // parse the hex num
                             self.hex_num();
+                        } else if !self.esc.contains(&p) {
+                            // If the value isnt in our accepted escapable characters, crash
+                            panic!("Invalid escaped character : {} at pos {}", p, self.pos)
+                        } else {
+                            // If we find a valid escaped character, advance to the next one
+                            self.advance();
                         }
                     }
                 }
